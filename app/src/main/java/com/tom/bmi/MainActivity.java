@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //        alert2(bmi);
         Intent intent = new Intent(this, ResultActivity.class);
         Bundle b = new Bundle();
-        b.putFloat("BMI", bmi);
+        b.putFloat(getString(R.string.bmi_extra), bmi);
         intent.putExtras(b);
 
 //        intent.putExtra("BMI", bmi);
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("BMI")
                 .setMessage("您的BMI" + bmi)
-                .setPositiveButton("OK", null)
+                .setPositiveButton(getString(R.string.button_ok), null)
                 .show();
     }
 

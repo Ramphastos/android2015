@@ -15,7 +15,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 //        float bmi = getIntent().getFloatExtra("BMI", 0);
         Bundle b = getIntent().getExtras();
-        float bmi = b.getFloat("BMI");
+        float bmi = b.getFloat(getString(R.string.bmi_extra));
         TextView result = (TextView) findViewById(R.id.result);
         result.setText(bmi+"");
 
