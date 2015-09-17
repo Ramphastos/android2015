@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private boolean rememberUserid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,26 @@ public class LoginActivity extends AppCompatActivity {
         String uid = getSharedPreferences("atm", MODE_PRIVATE)
                 .getString("PREF_USERID", "");
         userid.setText(uid);
+        rememberUserid = getSharedPreferences("atm", MODE_PRIVATE)
+                .getBoolean("PREF_REMEMBER_USERID", false);
+        CheckBox cb = (CheckBox) findViewById(R.id.cb_remember_userid);
+        cb.setChecked(rememberUserid);
+
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rememberUserid = isChecked;
+                getSharedPreferences("atm", MODE_PRIVATE).edit()
+                        .putBoolean("PREF_REMEMBER_USERID", isChecked)
+                        .commit();
+                if (!isChecked){
+                    getSharedPreferences("atm", MODE_PRIVATE)
+                            .edit()
+                            .remove("PREF_USERID")
+                            .commit();
+                }
+            }
+        });
     }
 
     public void login(View v){
@@ -30,11 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         if (uid.equals("jack") && pw.equals("1234")){
             Toast.makeText(this, "登入成功", Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
-            getSharedPreferences("atm", MODE_PRIVATE)
-                    .edit()
-                    .putString("PREF_USERID", uid)
-                    .commit();
-
+            if (rememberUserid) {
+                getSharedPreferences("atm", MODE_PRIVATE)
+                        .edit()
+                        .putString("PREF_USERID", uid)
+                        .commit();
+            }
             finish();
         }else{
             new AlertDialog.Builder(this)
