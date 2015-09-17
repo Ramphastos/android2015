@@ -26,9 +26,9 @@ public class LoginActivity extends AppCompatActivity {
         if (uid.equals("jack") && pw.equals("1234")){
             Toast.makeText(this, "登入成功", Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
-            getSharedPreferences("atm", MODE_PRIVATE)
+            getSharedPreferences(getString(R.string.pref_name), MODE_PRIVATE)
                     .edit()
-                    .putString("PREF_USERID", uid)
+                    .putString(getString(R.string.pref_userid), uid)
                     .commit();
 
             finish();
