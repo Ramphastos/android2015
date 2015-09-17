@@ -1,6 +1,7 @@
 package com.tom.atm;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +25,12 @@ public class LoginActivity extends AppCompatActivity {
         String pw = edPasswd.getText().toString();
         if (uid.equals("jack") && pw.equals("1234")){
             Toast.makeText(this, "登入成功", Toast.LENGTH_LONG).show();
-            setResult(1);
+            setResult(RESULT_OK);
+            getSharedPreferences("atm", MODE_PRIVATE)
+                    .edit()
+                    .putString("PREF_USERID", uid)
+                    .commit();
+
             finish();
         }else{
             new AlertDialog.Builder(this)

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode==REQUEST_LOGIN){
-            if (resultCode!=1){
+            if (resultCode!=RESULT_OK){
                 Toast.makeText(this, "抓包", Toast.LENGTH_LONG).show();
                 finish();
             }
