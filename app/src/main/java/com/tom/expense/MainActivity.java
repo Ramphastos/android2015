@@ -1,6 +1,7 @@
 package com.tom.expense;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,10 +37,17 @@ public class MainActivity extends AppCompatActivity {
         values.put("amount", amount);
         long id = helper.getWritableDatabase().insert("expense", null, values);
         Log.d("EXP", id+"");
+    }
 
-
-
-
+    public void query(View v){
+        Cursor c = helper.getReadableDatabase().query("expense", null, null, null, null, null, null);
+        while(c.moveToNext()){
+            int id = c.getInt(c.getColumnIndex("_id"));
+            String udate = c.getString(c.getColumnIndex("udate"));
+            String name = c.getString(c.getColumnIndex("name"));
+            int amount = c.getInt(c.getColumnIndex("amount"));
+            Log.d("ROW", id+"/"+udate+"/"+name+"/"+amount);
+        }
     }
 
     @Override

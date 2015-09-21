@@ -72,4 +72,11 @@
         android:text="新增"
         android:id="@+id/button"
         android:onClick="add" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查詢"
+        android:id="@+id/button2"
+        android:onClick="query" />
 </LinearLayout>
