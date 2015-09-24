@@ -5,12 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_LOGIN = 5;
+    String[] funcs = {"餘額查詢","交易明細", "投資清單", "更改密碼","離開"};
+    int[] icons = {R.drawable.f1, R.drawable.f2, R.drawable.f3, R.drawable.f4, R.drawable.f5};
 
     boolean logon = false;
     @Override
@@ -22,12 +29,43 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
             startActivityForResult(intent, REQUEST_LOGIN);
         }
-        String[] funcs = {"餘額查詢","交易明細", "投資清單", "更改密碼","離開"};
         GridView grid = (GridView) findViewById(R.id.grid);
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, funcs);
+        IconAdapter adapter = new IconAdapter();
         grid.setAdapter(adapter);
+//        ArrayAdapter adapter = new ArrayAdapter(this,
+//                android.R.layout.simple_list_item_1, funcs);
+//        grid.setAdapter(adapter);
+    }
 
+    class IconAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return funcs.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView==null) {
+                View v = getLayoutInflater().inflate(R.layout.icon, null);
+                ImageView iv = (ImageView) v.findViewById(R.id.icon_image);
+                TextView tv = (TextView) v.findViewById(R.id.icon_text);
+                tv.setText(funcs[position]);
+                iv.setImageResource(icons[position]);
+                convertView = v;
+            }
+            return convertView;
+        }
     }
 
     @Override
