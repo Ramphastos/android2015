@@ -19,11 +19,12 @@ public class QueryActivity extends AppCompatActivity {
         DBHelper helper = new DBHelper(this, "expense.db", null , 1);
         Cursor c = helper.getReadableDatabase().query("expense", null, null, null, null, null, null);
 
-        String[] from = {"name", "amount"};
-        int[] to = {android.R.id.text1, android.R.id.text2};
+        String[] from = {"udate", "name", "amount"};
+//        int[] to = {android.R.id.text1, android.R.id.text2};
+        int[] to = {R.id.col_date, R.id.col_name, R.id.col_amount};
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2, c, from, to, 1);
+                R.layout.row, c, from, to, 1);
 
         list.setAdapter(adapter);
 
