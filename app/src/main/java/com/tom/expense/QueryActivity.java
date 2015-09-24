@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -17,11 +18,14 @@ public class QueryActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.list);
         DBHelper helper = new DBHelper(this, "expense.db", null , 1);
         Cursor c = helper.getReadableDatabase().query("expense", null, null, null, null, null, null);
-        String[] from = {"name", "amount"};
-        int[] to = {android.R.id.text1, android.R.id.text2};
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2, c, from, to, 1);
+
+        String[] data = {"AAA", "BBB", "CCC"};
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.fruits));
         list.setAdapter(adapter);
+
+
     }
 
     @Override
