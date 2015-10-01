@@ -2,8 +2,10 @@ package com.tom.atm;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +14,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class LoginActivity extends AppCompatActivity {
 
     private boolean rememberUserid;
+    private String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +58,55 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v){
         EditText edUserid = (EditText) findViewById(R.id.userid);
         EditText edPasswd = (EditText) findViewById(R.id.passwd);
-        String uid = edUserid.getText().toString();
+        userid = edUserid.getText().toString();
         String pw = edPasswd.getText().toString();
-        if (uid.equals("jack") && pw.equals("1234")){
-            Toast.makeText(this, "登入成功", Toast.LENGTH_LONG).show();
-            setResult(RESULT_OK);
-            if (rememberUserid) {
-                getSharedPreferences("atm", MODE_PRIVATE)
-                        .edit()
-                        .putString("PREF_USERID", uid)
-                        .commit();
-            }
-            finish();
-        }else{
-            new AlertDialog.Builder(this)
-                    .setTitle("登入")
-                    .setMessage("登入失敗")
-                    .setPositiveButton("OK", null)
-                    .show();
-        }
+        String s = "http://j.snpy.org/atm/login?userid="+ userid +"&pw="+pw;
+        Log.d("LOGIN", s);
+        new LoginTask().execute(s);
+
     }
 
+    class LoginTask extends AsyncTask<String, Void, Integer>{
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            int n = 0;
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                InputStream is = conn.getInputStream();
+                n = is.read();
+                Log.d("LOGIN", n+"");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return n;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result==49){
+                Toast.makeText(LoginActivity.this, "登入成功", Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK);
+                if (rememberUserid) {
+                    getSharedPreferences("atm", MODE_PRIVATE)
+                            .edit()
+                            .putString("PREF_USERID", userid)
+                            .commit();
+                }
+                finish();
+            }else{
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("登入")
+                        .setMessage("登入失敗")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,4 +129,5 @@ public class LoginActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
