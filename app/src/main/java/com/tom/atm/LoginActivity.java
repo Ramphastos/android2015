@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean rememberUserid;
     private String userid;
+    private String passwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         EditText edUserid = (EditText) findViewById(R.id.userid);
         EditText edPasswd = (EditText) findViewById(R.id.passwd);
         userid = edUserid.getText().toString();
-        String pw = edPasswd.getText().toString();
-        String s = "http://j.snpy.org/atm/login?userid="+ userid +"&pw="+pw;
+        passwd = edPasswd.getText().toString();
+        String s = "http://j.snpy.org/atm/login?userid="+ userid +"&pw="+ passwd;
         Log.d("LOGIN", s);
         new LoginTask().execute(s);
 
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 InputStream is = conn.getInputStream();
                 n = is.read();
                 Log.d("LOGIN", n+"");
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -97,6 +99,13 @@ public class LoginActivity extends AppCompatActivity {
                             .putString("PREF_USERID", userid)
                             .commit();
                 }
+                Member.userid = userid;
+                Member.passwd = passwd;
+                AtmApplication myapp = (AtmApplication)getApplication();
+                myapp.userid = userid;
+                myapp.passwd = passwd;
+
+
                 finish();
             }else{
                 new AlertDialog.Builder(LoginActivity.this)

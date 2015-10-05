@@ -3,10 +3,12 @@ package com.tom.atm;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -14,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static final int REQUEST_LOGIN = 5;
     String[] funcs = {"餘額查詢","交易明細", "投資清單", "更改密碼","離開"};
     int[] icons = {R.drawable.f1, R.drawable.f2, R.drawable.f3, R.drawable.f4, R.drawable.f5};
@@ -32,9 +34,25 @@ public class MainActivity extends AppCompatActivity {
         GridView grid = (GridView) findViewById(R.id.grid);
         IconAdapter adapter = new IconAdapter();
         grid.setAdapter(adapter);
+        grid.setOnItemClickListener(this);
 //        ArrayAdapter adapter = new ArrayAdapter(this,
 //                android.R.layout.simple_list_item_1, funcs);
 //        grid.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("POS", position+"");
+        switch (position){
+            case 0:
+                startActivity(new Intent(this, BalanceActivity.class));
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+
+        }
     }
 
     class IconAdapter extends BaseAdapter{
