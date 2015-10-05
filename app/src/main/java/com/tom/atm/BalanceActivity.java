@@ -38,7 +38,7 @@ public class BalanceActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String result = "";
+            StringBuffer sb = new StringBuffer();
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -50,16 +50,16 @@ public class BalanceActivity extends AppCompatActivity {
 
                 String line = in.readLine();
                 while(line!=null){
-                    result = result+line;
+                    sb.append(line);
                     line = in.readLine();
                 }
-                Log.d("RESULT", result);
+                Log.d("RESULT", sb.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return result;
+            return sb.toString();
         }
 
         @Override
