@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(new Intent(this, BalanceActivity.class));
                 break;
             case 1:
+                startActivity(new Intent(this, HistoryActivity.class));
                 break;
             case 2:
                 break;

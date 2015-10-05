@@ -136,6 +136,9 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_quit){
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
