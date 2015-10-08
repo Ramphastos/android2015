@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(new Intent(this, HistoryActivity.class));
                 break;
             case 2:
+                startActivity(new Intent(this, FinanceActivity.class));
                 break;
 
         }
@@ -73,14 +74,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return position;
         }
 
+        public class ViewHolder{
+            ImageView img;
+            TextView tv;
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = new ViewHolder();
+            Log.d("POS", position+"/"+funcs[position]);
             if (convertView==null) {
-                View v = getLayoutInflater().inflate(R.layout.icon, null);
-                ImageView iv = (ImageView) v.findViewById(R.id.icon_image);
-                TextView tv = (TextView) v.findViewById(R.id.icon_text);
-                tv.setText(funcs[position]);
-                iv.setImageResource(icons[position]);
+                View v = getLayoutInflater().inflate(R.layout.icon, parent, false);
+                holder.img = (ImageView) v.findViewById(R.id.icon_image);
+                holder.tv = (TextView) v.findViewById(R.id.icon_text);
+                holder.tv.setText(funcs[position]);
+                holder.img.setImageResource(icons[position]);
                 convertView = v;
             }
             return convertView;

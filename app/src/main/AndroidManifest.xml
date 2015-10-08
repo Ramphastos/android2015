@@ -31,6 +31,10 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".FinanceActivity"
+            android:label="@string/title_activity_finance" >
+        </activity>
     </application>
 
 </manifest>
