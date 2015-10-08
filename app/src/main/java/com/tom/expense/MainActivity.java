@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,12 +21,17 @@ public class MainActivity extends AppCompatActivity {
     private EditText edName;
     private EditText edAmount;
     private DatePicker dpicker;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
+        dpicker.updateDate(2011, 10, 10);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"早餐", "午餐"});
+        spinner.setAdapter(adapter);
+
 
         helper = new DBHelper(this, "expense.db", null, 1);
     }
@@ -34,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
         edName = (EditText) findViewById(R.id.name);
         edAmount = (EditText) findViewById(R.id.amount);
         dpicker = (DatePicker) findViewById(R.id.udate2);
+        spinner = (Spinner) findViewById(R.id.spinner);
     }
 
     public void add(View v){
 
 //        String udate = edDate.getText().toString();
+
         String udate = new StringBuffer()
                 .append(dpicker.getYear())
                 .append("-")
