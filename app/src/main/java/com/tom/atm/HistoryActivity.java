@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,20 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            try {
 
+                JSONArray array = new JSONArray(s);
+                for (int i=0; i<array.length(); i++){
+                    JSONObject obj = array.getJSONObject(i);
+                    int amount = obj.getInt("amount");
+                    String date = obj.getString("date");
+                    String userid = obj.getString("userid");
+                    Log.d("OBJ", amount+"/"+date+"/"+userid);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
         }
