@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -18,6 +20,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -61,7 +67,7 @@ public class HistoryActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             try {
-
+                List<Map<String,String>> data = new ArrayList<>();
                 JSONArray array = new JSONArray(s);
                 for (int i=0; i<array.length(); i++){
                     JSONObject obj = array.getJSONObject(i);
@@ -69,7 +75,18 @@ public class HistoryActivity extends AppCompatActivity {
                     String date = obj.getString("date");
                     String userid = obj.getString("userid");
                     Log.d("OBJ", amount+"/"+date+"/"+userid);
+                    Map<String, String> row = new HashMap<>();
+                    row.put("amount", amount+"");
+                    row.put("date", date);
+                    row.put("userid", userid);
+                    data.add(row);
                 }
+                ListView list = (ListView) findViewById(R.id.list);
+                String[] from = {"date", "amount"};
+                int[] to = {android.R.id.text1, android.R.id.text2};
+                SimpleAdapter adapter = new SimpleAdapter(HistoryActivity.this,
+                        data, android.R.layout.simple_list_item_2,from, to );
+                list.setAdapter(adapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
