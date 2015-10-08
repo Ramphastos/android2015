@@ -26,6 +26,13 @@
             android:text="2015-09-21" />
     </LinearLayout>
 
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/udate2"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

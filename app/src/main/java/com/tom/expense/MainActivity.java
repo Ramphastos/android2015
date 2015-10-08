@@ -9,24 +9,43 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
     private DBHelper helper;
+    private EditText edDate;
+    private EditText edName;
+    private EditText edAmount;
+    private DatePicker dpicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViews();
+
         helper = new DBHelper(this, "expense.db", null, 1);
     }
 
+    private void findViews() {
+        edDate = (EditText) findViewById(R.id.udate);
+        edName = (EditText) findViewById(R.id.name);
+        edAmount = (EditText) findViewById(R.id.amount);
+        dpicker = (DatePicker) findViewById(R.id.udate2);
+    }
+
     public void add(View v){
-        EditText edDate = (EditText) findViewById(R.id.udate);
-        EditText edName = (EditText) findViewById(R.id.name);
-        EditText edAmount = (EditText) findViewById(R.id.amount);
-        String udate = edDate.getText().toString();
+
+//        String udate = edDate.getText().toString();
+        String udate = new StringBuffer()
+                .append(dpicker.getYear())
+                .append("-")
+                .append(dpicker.getMonth()+1)
+                .append("-")
+                .append(dpicker.getDayOfMonth()).toString();
+
         String name = edName.getText().toString();
         int amount = Integer.parseInt(edAmount.getText().toString());
 //        helper.getWritableDatabase().execSQL("insert into expense(udate,name,amount)" +
