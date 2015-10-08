@@ -82,10 +82,11 @@ public class HistoryActivity extends AppCompatActivity {
                     data.add(row);
                 }
                 ListView list = (ListView) findViewById(R.id.list);
-                String[] from = {"date", "amount"};
-                int[] to = {android.R.id.text1, android.R.id.text2};
+                String[] from = {"date", "amount", "userid"};
+//                int[] to = {android.R.id.text1, android.R.id.text2};
+                int[] to = {R.id.col_date, R.id.col_amount, R.id.col_userid};
                 SimpleAdapter adapter = new SimpleAdapter(HistoryActivity.this,
-                        data, android.R.layout.simple_list_item_2,from, to );
+                        data, R.layout.row,from, to );
                 list.setAdapter(adapter);
 
             } catch (JSONException e) {
