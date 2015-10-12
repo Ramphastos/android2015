@@ -29,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         dpicker.updateDate(2011, 10, 10);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"早餐", "午餐"});
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, new String[]{"早餐", "午餐"});
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
 
