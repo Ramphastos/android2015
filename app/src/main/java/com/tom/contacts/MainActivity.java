@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,16 +18,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //read contacts
+        ListView list = (ListView) findViewById(R.id.list);
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
-        while(c.moveToNext()){
+        String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
+        int[] to = {android.R.id.text1};
+        SimpleCursorAdapter adapter =
+                new SimpleCursorAdapter(this,
+                        android.R.layout.simple_list_item_1, c, from, to, 1);
+
+        list.setAdapter(adapter);
+
+        /*while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(
                     ContactsContract.Contacts._ID));
             String name = c.getString(c.getColumnIndex(
                     ContactsContract.Contacts.DISPLAY_NAME));
             Log.d("REC", id+"/"+name);
-        }
+        }*/
 
     }
 
