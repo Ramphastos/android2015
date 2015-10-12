@@ -21,16 +21,23 @@ public class MainActivity extends AppCompatActivity {
         //read contacts
         ListView list = (ListView) findViewById(R.id.list);
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-        /*String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
-        int[] to = {android.R.id.text1};
+        String[] projection = {ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                Phone.NUMBER
+        };
+        Cursor c = cr.query(Phone.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+        String[] from = {ContactsContract.Contacts.DISPLAY_NAME, Phone.NUMBER};
+        int[] to = {android.R.id.text1, android.R.id.text2};
         SimpleCursorAdapter adapter =
                 new SimpleCursorAdapter(this,
-                        android.R.layout.simple_list_item_1, c, from, to, 1);
+                        android.R.layout.simple_list_item_2, c, from, to, 1);
 
-        list.setAdapter(adapter);*/
-
+        list.setAdapter(adapter);
+        /*
         while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(
                     ContactsContract.Contacts._ID));
@@ -40,13 +47,18 @@ public class MainActivity extends AppCompatActivity {
                     ContactsContract.Contacts.HAS_PHONE_NUMBER));
             Log.d(TAG, id+"/"+name+"/"+hasPhone);
             if (hasPhone==1){
-                Cursor c2 = cr.query(Phone.CONTENT_URI, null, Phone.CONTACT_ID+"=?", new String[]{id+""}, null);
+                Cursor c2 = cr.query(
+                        Phone.CONTENT_URI,
+                        null,
+                        Phone.CONTACT_ID+"=?",
+                        new String[]{id+""},
+                        null);
                 while(c2.moveToNext()){
                     String phone = c2.getString(c2.getColumnIndex(Phone.NUMBER));
                     Log.d(TAG, "  >"+phone);
                 }
             }
-        }
+        }*/
 
     }
 
