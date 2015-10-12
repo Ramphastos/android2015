@@ -9,12 +9,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DBHelper helper;
     private EditText edDate;
@@ -30,11 +31,13 @@ public class MainActivity extends AppCompatActivity {
         findViews();
         dpicker.updateDate(2011, 10, 10);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, new String[]{"早餐", "午餐"});
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.fruits));
+//                android.R.layout.simple_spinner_item, new String[]{"早餐", "午餐"});
+
         adapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
+        spinner.setOnItemSelectedListener(this);
 
         helper = new DBHelper(this, "expense.db", null, 1);
     }
@@ -58,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
                 .append("-")
                 .append(dpicker.getDayOfMonth()).toString();
 
-        String name = edName.getText().toString();
+//        String name = edName.getText().toString();
+        String name = (String) spinner.getSelectedItem();
+        Log.d("SPIN", name);
         int amount = Integer.parseInt(edAmount.getText().toString());
 //        helper.getWritableDatabase().execSQL("insert into expense(udate,name,amount)" +
 //                " values('" + udate+"','" +name+"'," + amount + ")");
@@ -104,5 +109,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String name = getResources().getStringArray(R.array.fruits)[position];
+        Log.d("SELECTED", name);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
