@@ -3,6 +3,7 @@ package com.tom.contacts;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = MainActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,21 +23,30 @@ public class MainActivity extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
-        String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
+        /*String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
         int[] to = {android.R.id.text1};
         SimpleCursorAdapter adapter =
                 new SimpleCursorAdapter(this,
                         android.R.layout.simple_list_item_1, c, from, to, 1);
 
-        list.setAdapter(adapter);
+        list.setAdapter(adapter);*/
 
-        /*while(c.moveToNext()){
+        while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(
                     ContactsContract.Contacts._ID));
             String name = c.getString(c.getColumnIndex(
                     ContactsContract.Contacts.DISPLAY_NAME));
-            Log.d("REC", id+"/"+name);
-        }*/
+            int hasPhone = c.getInt(c.getColumnIndex(
+                    ContactsContract.Contacts.HAS_PHONE_NUMBER));
+            Log.d(TAG, id+"/"+name+"/"+hasPhone);
+            if (hasPhone==1){
+                Cursor c2 = cr.query(Phone.CONTENT_URI, null, Phone.CONTACT_ID+"=?", new String[]{id+""}, null);
+                while(c2.moveToNext()){
+                    String phone = c2.getString(c2.getColumnIndex(Phone.NUMBER));
+                    Log.d(TAG, "  >"+phone);
+                }
+            }
+        }
 
     }
 
