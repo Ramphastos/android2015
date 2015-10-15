@@ -2,6 +2,7 @@ package com.tom.images;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -12,12 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
         GridView grid = (GridView) findViewById(R.id.grid);
         GridImageAdapter adapter = new GridImageAdapter( this, R.layout.icon, c, from , to , 1);
         grid.setAdapter(adapter);
+        grid.setOnItemClickListener(this);
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("POS", position);
+        startActivity(intent);
+
     }
 
     class GridImageAdapter extends SimpleCursorAdapter{
@@ -65,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 tv.setText(c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                 int id = c.getInt(c.getColumnIndex(MediaStore.Images.Media._ID));
 
-                iv.setImageURI(Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id+""));
+                iv.setImageURI(Uri.withAppendedPath(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id+""));
                 convertView = v;
             }
             return convertView;
