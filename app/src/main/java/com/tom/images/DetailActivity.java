@@ -1,23 +1,38 @@
 package com.tom.images;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 public class DetailActivity extends AppCompatActivity {
 
     private int pos;
     private Cursor cursor;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        image = (ImageView) findViewById(R.id.image);
         pos = getIntent().getIntExtra("POS", 0);
         cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+        Log.d("POS", pos + "");
+        cursor.moveToPosition(pos);
+
+        updateImage();
+
+    }
+
+    private void updateImage() {
+        int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+        image.setImageURI(Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id + ""));
     }
 
     @Override
