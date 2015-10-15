@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,12 +22,21 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, null);
         Log.d("SIZE", c.getCount()+"");
-        while(c.moveToNext()){
+
+        /*while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(MediaStore.Images.Media._ID));
             String data = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
             String name = c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
             Log.d("IMG", id+"/"+data+"/"+name);
-        }
+        }*/
+        String[] from = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DISPLAY_NAME};
+        int[] to = {R.id.img, R.id.filename};
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                this, R.layout.icon, c, from , to , 1
+        );
+        GridView grid = (GridView) findViewById(R.id.grid);
+        grid.setAdapter(adapter);
     }
 
     @Override
