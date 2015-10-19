@@ -18,7 +18,7 @@ public class HelloReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("com.tom.tester.HELLO")){
             NotificationManager notiManager =
                     (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-            NotificationCompat noti = new NotificationCompat.Builder(context)
+            Notification noti = new NotificationCompat.Builder(context)
                     .setContentTitle("TOM")
                     .setContentText("Hello av8d")
                     .setSmallIcon(R.drawable.shopping_cart)
