@@ -10,14 +10,21 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
-public class DetailActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
+public class DetailActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, ViewSwitcher.ViewFactory {
 
     private int pos;
     private Cursor cursor;
     private ImageView image;
     private GestureDetector detector;
+    private ImageSwitcher switcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +33,14 @@ public class DetailActivity extends AppCompatActivity implements GestureDetector
         detector = new GestureDetector(this, this);
 
         image = (ImageView) findViewById(R.id.image);
+        switcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
+        switcher.setFactory(this);
+        switcher.setInAnimation(this, android.R.anim.slide_in_left);
+        switcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         pos = getIntent().getIntExtra("POS", 0);
         cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
         Log.d("POS", pos + "");
         cursor.moveToPosition(pos);
-
         updateImage();
 
     }
@@ -42,7 +52,8 @@ public class DetailActivity extends AppCompatActivity implements GestureDetector
 
     private void updateImage() {
         int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-        image.setImageURI(Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id + ""));
+//        image.setImageURI(Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id + ""));
+        switcher.setImageURI(Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id + ""));
     }
 
     @Override
@@ -110,7 +121,17 @@ public class DetailActivity extends AppCompatActivity implements GestureDetector
             updateImage();
             pos++;
         }
-
         return false;
+    }
+
+    @Override
+    public View makeView() {
+        ImageView iv = new ImageView(this);
+        iv.setLayoutParams(
+                new ImageSwitcher.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT)
+        );
+        return iv;
     }
 }
