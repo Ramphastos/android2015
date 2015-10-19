@@ -1,5 +1,7 @@
 package com.tom.tester;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +15,13 @@ public class HelloReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("RECE", "onReceive");
         if (intent.getAction().equals("com.tom.tester.HELLO")){
-
+            NotificationManager notiManager =
+                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+            Notification noti = new Notification.Builder(context)
+                    .setContentTitle("TOM")
+                    .setContentText("Hello av8d")
+                    .build();
+            notiManager.notify(1, noti);
         }
     }
 }
