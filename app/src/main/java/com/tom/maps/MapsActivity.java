@@ -1,5 +1,6 @@
 package com.tom.maps;
 
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -9,7 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -67,6 +68,14 @@ public class MapsActivity extends FragmentActivity {
         //一開始即移動地圖到文化推廣
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(25.0258420,121.5380680), 18));
+        mMap.setOnMyLocationChangeListener(this);
+    }
 
+    @Override
+    public void onMyLocationChange(Location location) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(
+                location.getLatitude(),
+                location.getLongitude()
+        )));
     }
 }
