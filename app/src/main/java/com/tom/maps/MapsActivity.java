@@ -1,8 +1,11 @@
 package com.tom.maps;
 
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,7 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener, LocationListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -67,8 +70,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //一開始即移動地圖到文化推廣
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(25.0258420,121.5380680), 18));
-        mMap.setOnMyLocationChangeListener(this);
+                new LatLng(25.0258420, 121.5380680), 18));
+//        mMap.setOnMyLocationChangeListener(this);
+        LocationManager locManager =
+                (LocationManager)getSystemService(LOCATION_SERVICE);
+        try {
+            locManager.requestLocationUpdates("gps", 5*1000, 0, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -77,5 +89,29 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                 location.getLatitude(),
                 location.getLongitude()
         )));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("LOCATION", "onLocationChanged");
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(
+                location.getLatitude(),
+                location.getLongitude()
+        )));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("LOCATION", "onStatusChanged");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("LOCATION", "onProviderEnabled");
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("LOCATION", "onProviderDisabled");
     }
 }
