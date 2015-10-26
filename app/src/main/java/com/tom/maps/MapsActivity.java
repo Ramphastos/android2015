@@ -1,12 +1,15 @@
 package com.tom.maps;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,16 +20,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener, LocationListener {
 
     LatLng seven = new LatLng(25.0257431, 121.5385991);
-
+    LatLng sce = new LatLng(25.0258420, 121.5380680);
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    Map<Marker, Friend> friends = new HashMap<>();
+    private Friend f1;
+    private Friend f2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        f1 = new Friend("湯老猴", R.drawable.monkey, "09999999");
+        f2 = new Friend("小豬", R.drawable.pig, "091111111");
         setUpMapIfNeeded();
     }
 
@@ -89,26 +100,41 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
-                View view = getLayoutInflater().inflate(R.layout.info, null);
-                TextView tv1 = (TextView) view.findViewById(R.id.info_title);
-                tv1.setText(marker.getTitle());
-
-                return view;
+                return null;
             }
 
             @Override
             public View getInfoContents(Marker marker) {
-                return null;
+                View view = getLayoutInflater().inflate(R.layout.friend, null);
+                final Friend friend = friends.get(marker);
+                TextView tv1 = (TextView) view.findViewById(R.id.info_title);
+                tv1.setText(friend.getName());
+                ImageView iv = (ImageView) view.findViewById(R.id.info_img);
+                iv.setImageResource(friend.getAvatarId());
+                TextView tv = (TextView) view.findViewById(R.id.info_phone);
+                tv.setText(friend.getPhone());
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+friend.getPhone()));
+                        startActivity(intent);
+                    }
+                });
+                return view;
             }
         });
 
-        mMap.addMarker(
+        Marker f1Marker = mMap.addMarker(
                 new MarkerOptions()
-                .position(seven)
-                .title("AAA")
-                .snippet("BBBBBBBB")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.seven_11_icon))
+                        .position(seven)
+                        .title(f1.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(f1.getAvatarId()))
         );
+        friends.put(f1Marker, f1);
+        friends.put(mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(25.0258420, 121.5380680))
+                .icon(BitmapDescriptorFactory.fromResource(f2.getAvatarId()))
+                .title(f2.getName())), f2);
 
     }
 
