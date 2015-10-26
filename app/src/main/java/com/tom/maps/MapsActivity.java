@@ -10,10 +10,13 @@ import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener, LocationListener {
+
+    LatLng seven = new LatLng(25.0257431, 121.5385991);
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -75,11 +78,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         LocationManager locManager =
                 (LocationManager)getSystemService(LOCATION_SERVICE);
         try {
-            locManager.requestLocationUpdates("gps", 5*1000, 0, this);
+            //locManager.requestLocationUpdates("gps", 5*1000, 0, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        mMap.addMarker(
+                new MarkerOptions()
+                .position(seven)
+                .title("AAA")
+                .snippet("BBBBBBBB")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.seven_11_icon))
+        );
 
     }
 
