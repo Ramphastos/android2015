@@ -113,13 +113,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                 iv.setImageResource(friend.getAvatarId());
                 TextView tv = (TextView) view.findViewById(R.id.info_phone);
                 tv.setText(friend.getPhone());
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+friend.getPhone()));
-                        startActivity(intent);
-                    }
-                });
                 return view;
             }
         });
@@ -135,7 +128,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                 .position(new LatLng(25.0258420, 121.5380680))
                 .icon(BitmapDescriptorFactory.fromResource(f2.getAvatarId()))
                 .title(f2.getName())), f2);
-
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Friend friend = friends.get(marker);
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+friend.getPhone()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
