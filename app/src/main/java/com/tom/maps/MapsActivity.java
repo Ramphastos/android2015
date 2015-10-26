@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,8 +50,57 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         f1 = new Friend("湯老猴", R.drawable.monkey, "09999999");
         f2 = new Friend("小豬", R.drawable.pig, "091111111");
         setUpMapIfNeeded();
+        String s = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyCEVql250_WjF0GSN79jkBcuo0v6UZnNgE&location=25.0258420,121.5380680&radius=500";
+        new PlacesTask().execute(s);
     }
 
+    class PlacesTask extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuffer sb = new StringBuffer();
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line = in.readLine();
+
+                while(line!=null){
+                    sb.append(line);
+                    line = in.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return sb.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d("JSON", s);
+            try {
+                JSONObject obj = new JSONObject(s);
+                JSONArray results = obj.getJSONArray("results");
+                for (int i=0; i<results.length();i++){
+                    JSONObject place = results.getJSONObject(i);
+                    JSONObject geometry = place.getJSONObject("geometry");
+                    JSONObject location = geometry.getJSONObject("location");
+                    double lat = location.getDouble("lat");
+                    double lng = location.getDouble("lng");
+                    String name = place.getString("name");
+                    Log.d("PLACE", name+"/"+lat+"/"+lng);
+                    mMap.addMarker(new MarkerOptions()
+                    .title(name)
+                    .position(new LatLng(lat, lng)));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
