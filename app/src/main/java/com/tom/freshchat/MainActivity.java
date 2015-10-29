@@ -14,7 +14,7 @@ import com.firebase.client.FirebaseApp;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements ValueEventListener {
+public class MainActivity extends BaseActivity implements ValueEventListener {
 
     private TextView msg;
     private EditText input;
@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        ((ChatApplication)getApplication()).is
-
+        if (!getApp().isLogon()){
+            
+        }
 
         msg = (TextView) findViewById(R.id.msg);
         input = (EditText) findViewById(R.id.editText);
