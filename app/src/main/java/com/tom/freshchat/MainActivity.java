@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        ((ChatApplication)getApplication()).is
+
+
         msg = (TextView) findViewById(R.id.msg);
         input = (EditText) findViewById(R.id.editText);
         Firebase.setAndroidContext(this);
