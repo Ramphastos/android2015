@@ -1,5 +1,6 @@
 package com.tom.freshchat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,7 +27,7 @@ public class MainActivity extends BaseActivity implements ValueEventListener {
         setContentView(R.layout.activity_main);
 //        ((ChatApplication)getApplication()).is
         if (!getApp().isLogon()){
-            
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         msg = (TextView) findViewById(R.id.msg);
