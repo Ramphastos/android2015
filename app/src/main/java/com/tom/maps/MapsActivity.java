@@ -1,6 +1,8 @@
 package com.tom.maps;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -50,8 +52,35 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         f1 = new Friend("湯老猴", R.drawable.monkey, "09999999");
         f2 = new Friend("小豬", R.drawable.pig, "091111111");
         setUpMapIfNeeded();
-        String s = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyCEVql250_WjF0GSN79jkBcuo0v6UZnNgE&location=25.0258420,121.5380680&radius=500";
+        String s = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyCBNQlgABwWOXT4iV7C3sjHOUijYtLtSrs&location=25.0258420,121.5380680&radius=500";
         new PlacesTask().execute(s);
+    }
+
+    class IconTask extends AsyncTask<String, Void, Bitmap>{
+        Marker marker;
+        public IconTask(Marker marker){
+            this.marker = marker;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(params[0]);
+                bitmap = BitmapFactory.decodeStream(url.openStream());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+        }
     }
 
     class PlacesTask extends AsyncTask<String, Void, String>{
@@ -90,10 +119,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                     double lat = location.getDouble("lat");
                     double lng = location.getDouble("lng");
                     String name = place.getString("name");
-                    Log.d("PLACE", name+"/"+lat+"/"+lng);
-                    mMap.addMarker(new MarkerOptions()
-                    .title(name)
-                    .position(new LatLng(lat, lng)));
+                    String iconURL = place.getString("icon");
+                    Log.d("PLACE", name + "/" + lat + "/" + lng);
+                    Marker m = mMap.addMarker(new MarkerOptions()
+                        .title(name)
+                        .position(new LatLng(lat, lng)));
+                    new IconTask(m).execute(iconURL);
                 }
 
             } catch (JSONException e) {
@@ -183,6 +214,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                         .title(f1.getName())
                         .icon(BitmapDescriptorFactory.fromResource(f1.getAvatarId()))
         );
+
         friends.put(f1Marker, f1);
         friends.put(mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(25.0258420, 121.5380680))
