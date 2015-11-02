@@ -37,12 +37,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void login(View v){
-        String uid = ((EditText)findViewById(R.id.login_uid)).getText().toString();
+        final String uid = ((EditText)findViewById(R.id.login_uid)).getText().toString();
         String pw = ((EditText)findViewById(R.id.login_pw)).getText().toString();
         ref.authWithPassword(uid, pw, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 Log.d("FIRE", "onAuthenticated");
+                getApp().setUid(uid);
+                getApp().setLogon(true);
+                finish();
             }
 
             @Override
@@ -52,6 +55,13 @@ public class LoginActivity extends BaseActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((EditText)findViewById(R.id.login_uid)).setText(getApp().getUid());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

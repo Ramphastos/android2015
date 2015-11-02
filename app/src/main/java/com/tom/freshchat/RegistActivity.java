@@ -13,7 +13,7 @@ import com.firebase.client.FirebaseError;
 
 import java.util.Map;
 
-public class RegistActivity extends AppCompatActivity {
+public class RegistActivity extends BaseActivity {
 
     private Firebase ref;
 
@@ -26,13 +26,15 @@ public class RegistActivity extends AppCompatActivity {
     }
 
     public void signup(View v){
-        String uid = ((EditText)findViewById(R.id.signup_uid)).getText().toString();
+        final String uid = ((EditText)findViewById(R.id.signup_uid)).getText().toString();
         String pw = ((EditText)findViewById(R.id.signup_pw)).getText().toString();
         ref.createUser(uid, pw, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 Log.d("FIRE", "onSuccess");
                 Log.d("FIRE", (String) result.get("uid"));
+                getApp().setUid(uid);
+                finish();
             }
 
             @Override
