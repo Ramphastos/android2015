@@ -1,38 +1,27 @@
 package com.tom.freshchat;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-public class LoginActivity extends BaseActivity {
+public class RegistActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Button regist = (Button)findViewById(R.id.signup);
-        regist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(
-                        new Intent(LoginActivity.this, RegistActivity.class));
-            }
-        });
+        setContentView(R.layout.activity_regist);
     }
 
-    public void login(View v){
-        String uid = ((EditText)findViewById(R.id.editText2)).getText().toString();
-        String pw = ((EditText)findViewById(R.id.editText2)).getText().toString();
+    public void signup(View v){
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_regist, menu);
         return true;
     }
 

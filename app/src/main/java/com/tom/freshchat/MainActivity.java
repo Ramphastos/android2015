@@ -3,6 +3,7 @@ package com.tom.freshchat;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseApp;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import java.util.Map;
 
 public class MainActivity extends BaseActivity implements ValueEventListener {
 
@@ -36,6 +39,14 @@ public class MainActivity extends BaseActivity implements ValueEventListener {
         ref = new Firebase("https://blistering-inferno-4737.firebaseio.com/");
         ref.child("message").setValue("Hello");
         ref.child("message").addValueEventListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!getApp().isLogon()){
+            finish();
+        }
     }
 
     public void send(View v){
