@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class Fragmen2 extends Fragment {
-    public Fragmen2() {
+public class Fragment2 extends Fragment {
+    public Fragment2() {
         // Required empty public constructor
     }
 
