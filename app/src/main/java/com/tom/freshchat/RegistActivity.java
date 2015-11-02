@@ -2,20 +2,45 @@ package com.tom.freshchat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.util.Map;
 
 public class RegistActivity extends AppCompatActivity {
+
+    private Firebase ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
+        Firebase.setAndroidContext(this);
+        ref = new Firebase("https://blistering-inferno-4737.firebaseio.com/");
     }
 
     public void signup(View v){
+        String uid = ((EditText)findViewById(R.id.signup_uid)).getText().toString();
+        String pw = ((EditText)findViewById(R.id.signup_pw)).getText().toString();
+        ref.createUser(uid, pw, new Firebase.ValueResultHandler<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                Log.d("FIRE", "onSuccess");
+                Log.d("FIRE", (String) result.get("uid"));
+            }
 
+            @Override
+            public void onError(FirebaseError firebaseError) {
+
+            }
+        });
+        
     }
 
     @Override
