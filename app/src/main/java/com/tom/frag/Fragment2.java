@@ -10,15 +10,19 @@ import android.view.ViewGroup;
 
 
 public class Fragment2 extends Fragment {
-    public Fragment2() {
-        // Required empty public constructor
+    private static Fragment2 frag;
+    public static Fragment2 getInstance(){
+        if (frag == null){
+            frag = new Fragment2();
+        }
+        return frag;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment2, container, false);
+        return inflater.inflate(R.layout.fragment2, null);
     }
 
 }

@@ -1,19 +1,37 @@
 package com.tom.frag;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
+    Fragment1 f1;
+    Fragment2 f2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        WindowManager wm = getWindowManager();
+        Display display = wm.getDefaultDisplay();
 
+        Fragment fragment = null;
+        if (display.getWidth()>display.getHeight()){
+             fragment = Fragment2.getInstance();
+        }else{
+            fragment = Fragment1.getInstance();
+        }
+        trans.replace(R.id.content, fragment);
+        trans.commit();
 
+//        f1 = (Fragment1) getFragmentManager().findFragmentById(R.id.fragment);
+//        f2 = (Fragment2) getFragmentManager().findFragmentById(R.id.fragment2);
     }
 
     @Override
