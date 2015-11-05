@@ -46,8 +46,9 @@ public class MyService extends Service implements GoogleApiClient.ConnectionCall
     @Override
     public void onConnected(Bundle bundle) {
         LocationRequest req = new LocationRequest();
-        req.setInterval(1000);
-        req.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        req.setInterval(10000);
+        req.setFastestInterval(5000);
+        req.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(api, req, this);
     }
 
