@@ -2,14 +2,24 @@ package com.tom.freshchat;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
+
+public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -17,7 +27,11 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        GoogleApiClient api = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .build();
+        api.connect();
 
         setUpMapIfNeeded();
 
@@ -65,5 +79,15 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d("LOC", "onConnected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("LOC", "onConnectionSuspended");
     }
 }
