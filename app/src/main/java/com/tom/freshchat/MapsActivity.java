@@ -1,5 +1,6 @@
 package com.tom.freshchat;
 
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +23,13 @@ import java.util.concurrent.TimeUnit;
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleApiClient api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        GoogleApiClient api = new GoogleApiClient.Builder(this)
+        api = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .build();
@@ -84,6 +86,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     public void onConnected(Bundle bundle) {
         Log.d("LOC", "onConnected");
+        Location loc = LocationServices.FusedLocationApi.getLastLocation(api);
+        if (loc!=null)
+            Log.d("LOC", loc.getLatitude()+"/"+loc.getLongitude());
     }
 
     @Override

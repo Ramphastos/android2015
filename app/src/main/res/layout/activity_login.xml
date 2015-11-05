@@ -47,7 +47,8 @@
         android:hint="@string/login_password"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:text="1234" />
 
     <LinearLayout
         android:orientation="horizontal"

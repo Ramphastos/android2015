@@ -41,12 +41,17 @@ public class MainActivity extends BaseActivity implements ValueEventListener {
         ref.child("message").addValueEventListener(this);
     }
 
+    public void map(View v){
+        startActivity(new Intent(this, MapsActivity.class));
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if (!getApp().isLogon()){
+        Log.d("LOGON", getApp().isLogon()+"");
+        /*if (!getApp().isLogon()){
             finish();
-        }
+        }*/
     }
 
     public void send(View v){
