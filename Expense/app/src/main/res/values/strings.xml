@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Expense</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_query">QueryActivity</string>
+    <array name="fruits">
+        <item>香蕉</item>
+        <item>芭樂</item>
+        <item>XXX</item>
+    </array>
+</resources>
