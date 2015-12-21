@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bmi</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_result">ResultActivity</string>
+    <string name="button_ok">OK</string>
+    <string name="bmi_extra">BMI</string>
+</resources>
